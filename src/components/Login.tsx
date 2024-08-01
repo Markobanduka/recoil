@@ -1,8 +1,14 @@
+import React from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userState } from "../States/userState";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler, FieldError } from "react-hook-form";
 
-const Login = () => {
+interface Inputs {
+  email: string;
+  password: string;
+}
+
+const Login: React.FC = () => {
   const setUserState = useSetRecoilState(userState);
   const userData = useRecoilValue(userState);
 
@@ -13,9 +19,9 @@ const Login = () => {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const handleLogin = (data) => {
+  const handleLogin: SubmitHandler<Inputs> = (data) => {
     if (data.email !== "admin@gmail.com" || data.password !== "123456") {
-      setError("errorData", {
+      setError("email", {
         type: "manual",
         message: "Invalid email or password",
       });
@@ -34,15 +40,15 @@ const Login = () => {
     <>
       {!userData.LoggedIn ? (
         <form onSubmit={handleSubmit(handleLogin)}>
-          {errors.errorData && <p>{errors.errorData.message}</p>}
+          {errors.email && <p>{(errors.email as FieldError).message}</p>}
           <input
-            {...register("email")}
+            {...register("email", { required: "Email is required" })}
             type="email"
             placeholder="Enter your email"
             className="border border-black mr-2"
           />
           <input
-            {...register("password")}
+            {...register("password", { required: "Password is required" })}
             type="password"
             placeholder="Enter your password"
             className="border border-black mr-2"
