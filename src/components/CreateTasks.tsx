@@ -1,14 +1,19 @@
+import React from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { tasksState } from "../States/tasksState";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { categories } from "../Utils/Category";
 
 interface Task {
   id: number;
   name: string;
+  category: string;
 }
 
 interface FormData {
   taskName: string;
+  category: string;
+  id: number;
 }
 
 const CreateTasks: React.FC = () => {
@@ -21,7 +26,6 @@ const CreateTasks: React.FC = () => {
 
   const setTasks = useSetRecoilState(tasksState);
   const tasks = useRecoilValue<Task[]>(tasksState);
-  // console.log(tasks);
 
   const createTask: SubmitHandler<FormData> = (data: FormData) => {
     const taskAlreadyExist = tasks.find((task) => task.name === data.taskName);
@@ -35,6 +39,7 @@ const CreateTasks: React.FC = () => {
       const newTask = {
         id: Date.now(),
         name: data.taskName,
+        category: data.category,
       };
       setTasks((oldTasks) => [...oldTasks, newTask]);
     }
@@ -42,6 +47,16 @@ const CreateTasks: React.FC = () => {
 
   return (
     <div>
+      <select {...register("category")}>
+        {categories.map((category, index) => {
+          return (
+            <option value={category} key={index}>
+              {category}
+            </option>
+          );
+        })}
+      </select>
+
       <form onSubmit={handleSubmit(createTask)}>
         {errors.taskName && <p>{errors.taskName.message}</p>}
         <input

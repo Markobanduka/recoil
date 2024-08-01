@@ -1,1 +1,1 @@
-const categories = ["frontend", "backend", "design"];
+export const categories = ["frontend", "backend", "design"];
