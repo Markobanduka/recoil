@@ -1,17 +1,27 @@
-import { useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userState } from "../States/userState";
+import { useForm } from "react-hook-form";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const setUserState = useSetRecoilState(userState);
   const userData = useRecoilValue(userState);
 
-  const handleLogin = () => {
-    if (email == "admin@gmail.com" && password == "123456") {
-      setUserState({ LoggedIn: true });
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<Inputs>();
+
+  const handleLogin = (data) => {
+    if (data.email !== "admin@gmail.com" || data.password !== "123456") {
+      setError("errorData", {
+        type: "manual",
+        message: "Invalid email or password",
+      });
+      return;
     }
+    setUserState({ LoggedIn: true });
   };
 
   const handleLogout = () => {
@@ -23,24 +33,21 @@ const Login = () => {
   return (
     <>
       {!userData.LoggedIn ? (
-        <form>
+        <form onSubmit={handleSubmit(handleLogin)}>
+          {errors.errorData && <p>{errors.errorData.message}</p>}
           <input
+            {...register("email")}
             type="email"
             placeholder="Enter your email"
             className="border border-black mr-2"
-            onChange={(e) => setEmail(e.target.value)}
           />
           <input
+            {...register("password")}
             type="password"
             placeholder="Enter your password"
             className="border border-black mr-2"
-            onChange={(e) => setPassword(e.target.value)}
           />
-          <button
-            type="button"
-            onClick={handleLogin}
-            className="bg-blue-600 p-2 rounded-md text-white"
-          >
+          <button className="bg-blue-600 p-2 rounded-md text-white">
             Login
           </button>
         </form>

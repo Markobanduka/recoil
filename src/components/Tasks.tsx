@@ -5,6 +5,7 @@ import { tasksState } from "../States/tasksState";
 
 interface Task {
   name: string;
+  id: number;
 }
 
 const Tasks: React.FC = () => {
@@ -14,20 +15,20 @@ const Tasks: React.FC = () => {
 
   console.log(taskData);
 
-  const deleteTask = (taskName: string) => {
-    const filteredTasks = taskData.filter((task) => task !== taskName);
+  const deleteTask = (taskId: number) => {
+    const filteredTasks = taskData.filter((task) => task.id !== taskId);
     setTaskData(filteredTasks);
   };
 
   return (
     <>
-      {taskData.map((taskName, index) => {
+      {taskData.map((task) => {
         return (
-          <div key={index}>
-            <p>{taskName}</p>
+          <div key={task.id}>
+            <p>{task.name}</p>
             <button
               className="p-2 bg-red-600 text-white rounded-md"
-              onClick={() => deleteTask(taskName)}
+              onClick={() => deleteTask(task.id)}
             >
               Delete
             </button>
@@ -38,7 +39,6 @@ const Tasks: React.FC = () => {
       {userData.LoggedIn && (
         <div>
           <CreateTasks />
-          <p>Tasks</p>
         </div>
       )}
     </>
