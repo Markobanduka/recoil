@@ -30,15 +30,9 @@ const Login: React.FC = () => {
     setUserState({ LoggedIn: true });
   };
 
-  const handleLogout = () => {
-    setUserState({
-      LoggedIn: false,
-    });
-  };
-
   return (
     <>
-      {!userData.LoggedIn ? (
+      {!userData.LoggedIn && (
         <form onSubmit={handleSubmit(handleLogin)}>
           {errors.email && <p>{(errors.email as FieldError).message}</p>}
           <input
@@ -57,13 +51,6 @@ const Login: React.FC = () => {
             Login
           </button>
         </form>
-      ) : (
-        <button
-          onClick={handleLogout}
-          className="bg-red-600 p-2 rounded-md text-white"
-        >
-          Logout
-        </button>
       )}
     </>
   );
