@@ -1,10 +1,11 @@
 import { atom } from "recoil";
 import { localStorageEffect } from "../Effects/localStorageEffect";
 
-interface Task {
+export interface Task {
   name: string;
   id: number;
   category: string;
+  comments?: string[];
 }
 
 export const tasksState = atom<Task[]>({

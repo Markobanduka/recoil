@@ -31,28 +31,32 @@ const Login: React.FC = () => {
   };
 
   return (
-    <>
+    <div className="flex justify-center items-center ">
       {!userData.LoggedIn && (
         <form onSubmit={handleSubmit(handleLogin)}>
-          {errors.email && <p>{(errors.email as FieldError).message}</p>}
+          {errors.email && (
+            <p className="text-red-600">
+              {(errors.email as FieldError).message}
+            </p>
+          )}
           <input
             {...register("email", { required: "Email is required" })}
             type="email"
             placeholder="Enter your email"
-            className="border border-black mr-2"
+            className="border border-black mr-2 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <input
             {...register("password", { required: "Password is required" })}
             type="password"
             placeholder="Enter your password"
-            className="border border-black mr-2"
+            className="border border-black mr-2 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button className="bg-blue-600 p-2 rounded-md text-white">
             Login
           </button>
         </form>
       )}
-    </>
+    </div>
   );
 };
 
